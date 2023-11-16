@@ -1,0 +1,13 @@
+From mcr.microsoft.com/playwright:v1.39.0-jammy
+USER root
+RUN mkdir /tests
+COPY . /tests
+WORKDIR /tests
+# Install Playwright dependencies
+RUN npm install
+# # # Install dependencies
+RUN npx @playwright/test install
+RUN npx playwright install-deps
+# # # Run tests
+# Outputs detailed logs and writes them to a file
+RUN npx playwright test --reporter=list | tee tests-output.log || true
